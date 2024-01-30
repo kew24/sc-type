@@ -9,7 +9,7 @@
 #
 
 # Modified gene_sets_prepare
-gene_sets_prepare <- function(path_to_db_file, cell_type){
+gene_sets_prepare <- function(path_to_db_file, cell_type, species="human", map = NULL){
 
   cell_markers = openxlsx::read.xlsx(path_to_db_file)
   cell_markers = cell_markers[cell_markers$tissueType == cell_type,] 
@@ -24,7 +24,7 @@ gene_sets_prepare <- function(path_to_db_file, cell_type){
     markers_all = sort(markers_all)
     
     if(length(markers_all) > 0){
-      # suppressMessages({markers_all = unique(na.omit(checkGeneSymbols(markers_all, species = "mouse")$Suggested.Symbol))}) # This is used if the symbols are not in the format of HGNC
+      suppressMessages({markers_all = unique(na.omit(checkGeneSymbols(markers_all, species = species, map = map)$Suggested.Symbol))})
       paste0(markers_all, collapse=",")
     } else {
       ""
@@ -39,7 +39,7 @@ gene_sets_prepare <- function(path_to_db_file, cell_type){
     markers_all = sort(markers_all)
     
     if (length(markers_all) > 0){
-      # suppressMessages({markers_all = unique(na.omit(checkGeneSymbols(markers_all)$Suggested.Symbol))}) # This is used if the symbols are not in the format of HGNC
+      suppressMessages({markers_all = unique(na.omit(checkGeneSymbols(markers_all, species = species, map = map)$Suggested.Symbol))})
       paste0(markers_all, collapse=",")
     } else {
       ""
